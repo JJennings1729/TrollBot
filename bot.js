@@ -54,6 +54,4 @@ function postMessage(BotResponse) {
   botReq.end(JSON.stringify(body));
 }
 
-respond();
-
 exports.respond = respond;
