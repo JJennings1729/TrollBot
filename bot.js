@@ -11,7 +11,7 @@ function respond() {
 
   if (BotResponse.length > 0) {
     this.res.writeHead(200);
-    console.log(this.req.name);
+    console.log(JSON.parse(request).name);
     //setTimeout(postMessage(BotResponse), 3000);
     this.res.end();
   } else {
