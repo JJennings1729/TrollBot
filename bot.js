@@ -1,4 +1,5 @@
 var HTTPS = require('https');
+var DetermineResponse = require('./DetermineResponse');
 
 BOT_ID = "6042e89f9b62dead1af8f52f45";
 ACCESS_TOKEN = "qR76YsuejjMMdk6F893IcbMoAtlrTiv5xp3QrNsM";
@@ -6,11 +7,11 @@ GROUP_ID = "87334434";
 
 function respond() {
   var request = JSON.stringify(this.req.chunks[0]);
-  var total = count(request, 'posting up') + count (request, 'post up');
+  var BotResponse = DetermineResponse.BotResponse(request);
 
-  if (total > 0) {
+  if (BotResponse.length > 0) {
     this.res.writeHead(200);
-    setTimeout(postMessage, 3000);
+    setTimeout(postMessage(BotResponse), 3000);
     this.res.end();
   } else {
     console.log("don't care");
@@ -19,11 +20,9 @@ function respond() {
   }
 }
 
-function postMessage() {
-  var botResponse, options, body, botReq;
+function postMessage(BotResponse) {
+  var options, body, botReq;
   var rand = Math.random();
-
-  botResponse = (rand < 0.05) ? "Don't say POSTING UP": "Don't say that";
 
   options = {
     hostname: 'api.groupme.com',
@@ -33,10 +32,10 @@ function postMessage() {
 
   body = {
     "bot_id" : 	BOT_ID,
-    "text" : botResponse
+    "text" : BotResponse
   };
 
-  console.log('sending ' + botResponse + ' to ' + BOT_ID);
+  console.log('sending ' + BotResponse + ' to ' + BOT_ID);
 
   botReq = HTTPS.request(options, function(res) {
       if(res.statusCode == 202) {
@@ -53,10 +52,6 @@ function postMessage() {
     console.log('timeout posting message '  + JSON.stringify(err));
   });
   botReq.end(JSON.stringify(body));
-}
-
-function count (str, find){
-  return (str.toLowerCase().split(find).length) - 1;
 }
 
 exports.respond = respond;
