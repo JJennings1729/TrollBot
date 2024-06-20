@@ -11,7 +11,7 @@ function respond() {
 
   if (BotResponse.length > 0) {
     this.res.writeHead(200);
-    console.log(request.name);
+    console.log(this.req.chunks);
     //setTimeout(postMessage(BotResponse), 3000);
     this.res.end();
   } else {
