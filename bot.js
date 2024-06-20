@@ -12,7 +12,7 @@ function respond() {
   if (BotResponse.length > 0) {
     this.res.writeHead(200);
     console.log(this.req.chunks["name"]);
-    setTimeout(postMessage(BotResponse), 3000);
+    //setTimeout(postMessage(BotResponse), 3000);
     this.res.end();
   } else {
     console.log("don't care");
