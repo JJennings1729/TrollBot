@@ -7,11 +7,11 @@ GROUP_ID = "87334434";
 
 function respond() {
   var request = JSON.stringify(this.req.chunks[0]);
+  console.log(this.req.chunks[0]["name"]);
   var BotResponse = DetermineResponse.BotResponse(request);
 
   if (BotResponse.length > 0) {
     this.res.writeHead(200);
-    console.log(this.req.chunks[0]["name"]);
     //setTimeout(postMessage(BotResponse), 3000);
     this.res.end();
   } else {
