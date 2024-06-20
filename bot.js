@@ -11,7 +11,8 @@ function respond() {
 
   if (BotResponse.length > 0) {
     this.res.writeHead(200);
-    setTimeout(postMessage(BotResponse), 3000);
+    console.log(request);
+    //setTimeout(postMessage(BotResponse), 3000);
     this.res.end();
   } else {
     console.log("don't care");
@@ -22,7 +23,6 @@ function respond() {
 
 function postMessage(BotResponse) {
   var options, body, botReq;
-  var rand = Math.random();
 
   options = {
     hostname: 'api.groupme.com',

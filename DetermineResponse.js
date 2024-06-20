@@ -4,6 +4,4 @@ BotResponse = function (input){
     return "Works OK!";
 }
 
-console.log(BotResponse(test));
-
 exports.BotResponse = BotResponse;
