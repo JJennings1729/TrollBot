@@ -4,6 +4,16 @@
 var mysql = require('mysql');
 require('dotenv').config();
 
+
+const safety = {           // If database is not working, safety will be used. 
+    playing_game : false,
+    chosen_word : "", 
+    revealed: "", 
+    chances_left : 4,
+    guessed : "abcdefghijklmnopqrstuvwxyz",
+    scores : []
+}
+
 async function manage (task, new_state = null){  
     
     const con = mysql.createConnection({
@@ -18,7 +28,10 @@ async function manage (task, new_state = null){
         case "get":
             return new Promise ((resolve) => {
                 con.connect(function(err) {
-                    if (err) throw err;
+                    if (err) {
+                        console.log("Database not working; safety state being used");
+                        return safety;
+                    }
                     var sql = "SELECT current FROM state";
                     con.query(sql, function (err, result) {
                         if (err) throw err;
@@ -30,6 +43,7 @@ async function manage (task, new_state = null){
             });
 
         case "update":
+            safety = new_state;
             var temp_state = JSON.stringify(new_state);
             var sql = "UPDATE state SET current = (?)" 
             con.query(sql, [temp_state], function (err, result) {
