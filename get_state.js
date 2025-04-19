@@ -5,7 +5,7 @@ var mysql = require('mysql');
 require('dotenv').config();
 
 
-const safety = {           // If database is not working, safety will be used. 
+var safety = {           // If database is not working, safety will be used. 
     playing_game : false,
     chosen_word : "", 
     revealed: "", 
