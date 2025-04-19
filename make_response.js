@@ -81,7 +81,9 @@ async function response (request) {
             text = "Correct! The word is " + state.chosen_word.toUpperCase() + 
                 get_scores(request.user_id, request.name);
             state.playing_game = false;
-        } 
+        } else if (input.includes("shit")){
+            text = "Still waiting, guess a letter \r\n" + state.revealed;
+        }
         if (input.length == 1){
             if (state.guessed.includes(input)){
                 state.guessed = state.guessed.replace(input, "");
