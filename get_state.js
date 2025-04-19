@@ -9,7 +9,7 @@ var safety = {           // If database is not working, safety will be used.
     playing_game : false,
     chosen_word : "", 
     revealed: "", 
-    chances_left : 4,
+    chances_left : 7,
     guessed : "abcdefghijklmnopqrstuvwxyz",
     scores : []
 }
