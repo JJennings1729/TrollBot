@@ -1,6 +1,7 @@
 const fs  = require('fs');
 const csv = require('csv-parser');
 const get_state = require('./get_state.js').manage;
+const activate = "shit";
 
 const hang_images = [
     'https://i.groupme.com/237x327.png.de80008f463a4069b6705116567d7c3e.large',
@@ -59,7 +60,7 @@ async function response (request) {
         console.log("Bot detected")
         answer = false;
     } else if (state.playing_game == false){
-        if (input.includes("shit")){
+        if (input.includes(activate)){
             if (input.includes("scores")){
                 text = get_scores();
             } else {
@@ -77,13 +78,6 @@ async function response (request) {
             answer = false;
         }
     } else {
-        if (input == state.chosen_word){
-            text = "Correct! The word is " + state.chosen_word.toUpperCase() + 
-                get_scores(request.user_id, request.name);
-            state.playing_game = false;
-        } else if (input.includes("shit")){
-            text = "Still waiting, guess a letter \r\n" + state.revealed;
-        }
         if (input.length == 1){
             if (state.guessed.includes(input)){
                 state.guessed = state.guessed.replace(input, "");
@@ -117,6 +111,12 @@ async function response (request) {
             } else {
                 text = input.toUpperCase() + " was already guessed! \r\n" + state.revealed;
             }
+        } else if (input == state.chosen_word){
+            text = "Correct! The word is " + state.chosen_word.toUpperCase() + 
+                get_scores(request.user_id, request.name);
+            state.playing_game = false;
+        } else if (input.includes(activate)){
+            text = "Still waiting, guess a letter \r\n" + state.revealed;
         } else {
             console.log("Not a letter!")
             answer = false;
