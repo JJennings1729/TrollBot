@@ -3,6 +3,7 @@
     "version": "0.1.2",
     "description": "An egregious application written in Node.js.",
     "main": "index.js",
+    "type": "commonjs",
     "scripts": {
         "start": "node index.js"
     },

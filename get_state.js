@@ -26,7 +26,7 @@ async function manage (task, new_state = null) {
                 try {
                     await doc.loadInfo();
                     const sheet = doc.sheetsByIndex[0];
-                    await sheet.loadCells('B1:B10');
+                    await sheet.loadCells('A1:A1');
                     const cell = sheet.getCell(0, 0);
                     const state = JSON.parse(cell.value);
                     safety = state;
@@ -42,7 +42,7 @@ async function manage (task, new_state = null) {
                 try {
                     await doc.loadInfo();
                     const sheet = doc.sheetsByIndex[0];
-                    await sheet.loadCells('B1:B10');
+                    await sheet.loadCells('A1:A1');
                     const state = sheet.getCell(0, 0);
                     state.value = temp;
                     await sheet.saveUpdatedCells();
