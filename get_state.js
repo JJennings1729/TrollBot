@@ -18,6 +18,32 @@ const serviceAccountAuth = new j.JWT({
   scopes: ['https://www.googleapis.com/auth/spreadsheets'],
 });
 
+
+function parseScores(cellValue) {
+  if (!cellValue || typeof cellValue !== 'string') return [];
+
+  return cellValue
+    .match(/\[([^\]]+)\]/g) || []      // extract any of these
+    .map(packet => {
+      const [user_id, name, score] = packet.slice(1, -1).split('|');
+      return {
+        user_id,
+        name,
+        score: Number(score)
+      };
+    });
+}
+
+function stringifyScores(scores) {
+  if (!Array.isArray(scores)) return '';
+
+  return scores
+    .map(s => `[${s.user_id}|${s.name}|${s.score}]`)
+    .join(' '); 
+}
+
+// Below function manages reading/writing to spreadsheet, to get game state.
+
 async function manage(task, new_state = null) {
   const doc = new g.GoogleSpreadsheet(process.env.SHEET_URL, serviceAccountAuth);
 
@@ -31,15 +57,15 @@ async function manage(task, new_state = null) {
         await sheet.loadCells('B2:B8');
 
         const state = {
-            playing_game : sheet.getCell(1, 1).value ?? safety.playing_game,
-            chosen_word  : sheet.getCell(2, 1).value ?? safety.chosen_word,
-            revealed     : sheet.getCell(3, 1).value ?? safety.revealed,
-            chances_left : sheet.getCell(4, 1).value ?? safety.chances_left,
-            guessed      : sheet.getCell(5, 1).value ?? safety.guessed,
-            activate     : sheet.getCell(6, 1).value ?? safety.activate,
-            scores       : sheet.getCell(7, 1).value
-                ? parseScores(sheet.getCell(7, 1).value)
-                : safety.scores
+          playing_game : sheet.getCell(1, 1).value ?? safety.playing_game,
+          chosen_word  : sheet.getCell(2, 1).value ?? safety.chosen_word,
+          revealed     : sheet.getCell(3, 1).value ?? safety.revealed,
+          chances_left : sheet.getCell(4, 1).value ?? safety.chances_left,
+          guessed      : sheet.getCell(5, 1).value ?? safety.guessed,
+          activate     : sheet.getCell(6, 1).value ?? safety.activate,
+          scores       : sheet.getCell(7, 1).value
+            ? parseScores(sheet.getCell(7, 1).value)
+            : safety.scores
         };
 
         safety = state;
