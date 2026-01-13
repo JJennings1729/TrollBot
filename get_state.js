@@ -31,13 +31,15 @@ async function manage(task, new_state = null) {
         await sheet.loadCells('B2:B8');
 
         const state = {
-          playing_game : sheet.getCell(1, 1).value === true,
-          chosen_word  : sheet.getCell(2, 1).value || "",
-          revealed     : sheet.getCell(3, 1).value || "",
-          chances_left : Number(sheet.getCell(4, 1).value) || 0,
-          guessed      : sheet.getCell(5, 1).value || "",
-          activate     : sheet.getCell(6, 1).value || "",
-          scores       : parseScores(sheet.getCell(7, 1).value || "")
+            playing_game : sheet.getCell(1, 1).value ?? safety.playing_game,
+            chosen_word  : sheet.getCell(2, 1).value ?? safety.chosen_word,
+            revealed     : sheet.getCell(3, 1).value ?? safety.revealed,
+            chances_left : sheet.getCell(4, 1).value ?? safety.chances_left,
+            guessed      : sheet.getCell(5, 1).value ?? safety.guessed,
+            activate     : sheet.getCell(6, 1).value ?? safety.activate,
+            scores       : sheet.getCell(7, 1).value
+                ? parseScores(sheet.getCell(7, 1).value)
+                : safety.scores
         };
 
         safety = state;
