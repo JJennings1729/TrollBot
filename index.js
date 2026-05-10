@@ -37,8 +37,7 @@ function postMessage(text, attach_url) {
 
   body = {
     "bot_id" : 	process.env.BOT_ID,
-    // Optionally add Copilot tag at the beginning
-    "text" : "@Copilot \n" + text,
+    "text" : text,
     "attachments" : [
       {
         "type"  : "image",

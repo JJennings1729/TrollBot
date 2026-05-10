@@ -45,18 +45,6 @@ function get_scores(state, UserID = "", UserName = "") {
         state.scores.map(p => `${p.name} : ${p.score}`).join("\r\n");
 }
 
-const getLastUnguessedLetter = (input, state) =>
-    ((input || '')
-        .toLowerCase()
-        .replace(/[^a-z\s]/g, '')
-        .split(/\s+/)
-        .filter(c =>
-            c.length === 1 &&
-            !state.guessed.includes(c)
-        )
-        .reverse()
-        .find(Boolean)) || null;
-
 
 // Single function handling message
 function handleLetter(letter, state, request) {
@@ -111,7 +99,7 @@ async function response(request) {
     const input = (request.text || '').toLowerCase();
     const state = await get_state("get");
 
-    if (request.name === "TrollBot") return false;
+    if (request.sender_type === "bot") return false;
 
     // Scores
     if (input.includes("scores")) {
@@ -153,11 +141,8 @@ async function response(request) {
         };
     }
 
-    // Determine letter (AI OR normal user)
-    let letter =
-        request.name === "Copilot"
-            ? getLastUnguessedLetter(input, state)
-            : (isLetter(input) ? input.trim() : null);
+    // Determine letter
+    let letter = (isLetter(input) ? input.trim() : null);
 
     if (letter) {
         const result = handleLetter(letter, state, request);
